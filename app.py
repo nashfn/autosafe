@@ -40,12 +40,18 @@ full_text = " \n".join(paragraphs)
 #    "temperature": 0.3,
 #    "max_tokens": 500
 #}
+@cl.on_chat_start
+async def on_chat_start():
+    print("A new chat session has started!")
+    await cl.Message(content="I am an NVIDIA Financial Result AI Expert. Please feel free to ask me any questions about the previous NVIDIA quarterly result and I'll be happy to answer ! ").send()
 
 @cl.on_message
 async def on_message(message: cl.Message):
 
     # Record the AI's response in the history
     message_history = cl.user_session.get("message_history", [  {"role": "system", "content": sys_prompt.format(full_text=full_text)},])
+
+ 
 
     # Image processing
     images = [file for file in message.elements if "image" in file.mime] if message.elements else []
